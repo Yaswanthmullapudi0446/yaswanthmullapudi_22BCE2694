@@ -1,0 +1,58 @@
+select department, count(department) from Worker 
+group by department having count(department)>3;
+
+SELECT department, SUM(salary)
+FROM worker
+GROUP BY department
+ORDER BY SUM(salary) DESC
+LIMIT 1 OFFSET 2
+
+SELECT * FROM (
+    SELECT department, COUNT(department) AS dept_count
+    FROM worker
+    GROUP BY department
+) AS dept_summary
+WHERE dept_count > 2;
+
+SELECT * FROM (
+    SELECT department, COUNT(department ) AS dept_count
+    FROM worker
+    GROUP BY department
+) AS dept_summary
+WHERE dept_count > 2;
+
+select first_name,department from worker where salary = (select max(salary) from worker);
+
+select * from worker
+where salary = (
+  select max(salary)
+  from worker
+  where department = 'hr'
+)
+and department = 'hr';
+
+create table student(
+s_id int,
+s_name varchar(25));
+
+insert into student values (101,'jayanth'),(102,'karthik'),(103,'praveen'),(104,'mukesh');
+
+create table address(
+s_id int,
+s_address varchar(25));
+insert into address values (101,'coimbatore'),(104,'chennai'),(105,'pune');
+
+select * from 
+student cross join address;
+
+select * from student inner join address where student.s_id = address.s_id;
+
+select * from student left outer join address on (student.s_id = address.s_id);
+
+SELECT SALARY
+FROM Worker W1
+WHERE 4 = (
+    SELECT COUNT(*)
+    FROM Worker W2
+    WHERE W2.SALARY > W1.SALARY
+);
