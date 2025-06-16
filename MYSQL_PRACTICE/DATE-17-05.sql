@@ -1,0 +1,72 @@
+CREATE DATABASE yaswanth;
+USE yaswanth;
+CREATE TABLE vit_vellore (
+    s_id INT,
+    s_name VARCHAR(50),
+    s_marks INT,
+    s_address VARCHAR(40),
+    pincode INT
+);
+
+CREATE TABLE vit_ap (
+    std_id INT,
+    std_name VARCHAR(50),
+    std_marks INT,
+    std_address VARCHAR(40),
+    pincodes INT
+);
+
+CREATE TABLE vit_chennai (
+    stds_id INT,
+    stds_name VARCHAR(50),
+    stds_marks INT,
+    stds_address VARCHAR(40),
+    pincodess INT
+);
+
+select*from vit;
+select*from vit_ap;
+select*from vit_chennai;
+
+show tables from yaswanth;
+
+INSERT INTO vit (s_id, s_name, s_marks, s_address, pincode) VALUES
+(1, 'Rahul', 85, 'Hyderabad', 500001),
+(2, 'Sneha', 90, 'Mumbai', 400001),
+(3, 'Amit', 78, 'Chennai', 600001),
+(4, 'Priya', 88, 'Delhi', 110001),
+(5, 'Karan', 76, 'Bangalore', 560001),
+(6, 'Divya', 92, 'Pune', 411001),
+(7, 'Ravi', 81, 'Kolkata', 700001),
+(8, 'Neha', 87, 'Ahmedabad', 380001),
+(9, 'Arjun', 79, 'Jaipur', 302001),
+(10, 'Pooja', 93, 'Lucknow', 226001);
+
+INSERT INTO vit_ap (std_id, std_name, std_marks, std_address, pincodes) VALUES
+(1, 'Manoj', 84, 'Vizag', 530001),
+(2, 'Anjali', 91, 'Guntur', 522001),
+(3, 'Kiran', 77, 'Tirupati', 517501),
+(4, 'Meena', 89, 'Vijayawada', 520001),
+(5, 'Rakesh', 74, 'Nellore', 524001),
+(6, 'Aishwarya', 95, 'Rajahmundry', 533101),
+(7, 'Suresh', 80, 'Eluru', 534001),
+(8, 'Lavanya', 86, 'Kakinada', 533001),
+(9, 'Nikhil', 82, 'Anantapur', 515001),
+(10, 'Bhavana', 94, 'Kurnool', 518001);
+
+INSERT INTO vit_chennai (stds_id, stds_name, stds_marks, stds_address, pincodess) VALUES
+(1, 'Vinay', 83, 'Coimbatore', 641001),
+(2, 'Shruti', 92, 'Madurai', 625001),
+(3, 'Rohit', 79, 'Trichy', 620001),
+(4, 'Keerthi', 87, 'Salem', 636001),
+(5, 'Ajay', 75, 'Erode', 638001),
+(6, 'Pavithra', 96, 'Vellore', 632001),
+(7, 'Deepak', 82, 'Tirunelveli', 627001),
+(8, 'Meghana', 88, 'Thanjavur', 613001),
+(9, 'Harsha', 80, 'Karur', 639001),
+(10, 'Sanjana', 93, 'Namakkal', 637001);
+
+alter table vit_vellore add(
+s_country varchar(100) default 'india'
+);
+update vit_vellore set s_marks=100 where s_id=5
