@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>School Management Dashboard</title>
+  <style>
+    /* Same CSS styles as before */
+    body {
+      font-family: Arial;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      max-width: 700px;
+      width: 100%;
+    }
+    /* ... rest of the styles remain the same ... */
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>🏫 School Management System</h1>
+
+  <!-- Principal Section -->
+  <h2 onclick="toggleSection('principalSection')">👨‍🏫 Principal Management</h2>
+  <div class="section" id="principalSection">
+    <div class="form-group">
+      <label>Name:</label><input type="text" id="principalName" placeholder="e.g. Mr. Sharma"><br>
+      <label>Qualification:</label><input type="text" id="principalQualification" placeholder="e.g. M.Ed, Ph.D"><br>
+      <label>Email:</label><input type="email" id="principalEmail" placeholder="e.g. principal@school.com"><br>
+      <label>Phone:</label><input type="text" id="principalPhone" placeholder="e.g. 9876543210"><br>
+    </div>
+    <button onclick="addPrincipal()">Add</button>
+    <button onclick="getPrincipal()">Get</button>
+    <button onclick="updatePrincipal()">Update</button>
+    <button onclick="deletePrincipal()">Delete</button>
+    <div class="info">ℹ️ GET, PUT, DELETE operations for principals are done using the <b>email</b>.</div>
+  </div>
+
+  <!-- Student Section -->
+  <h2 onclick="toggleSection('studentSection')">🧑‍🎓 Student Management</h2>
+  <div class="section" id="studentSection">
+    <div class="form-group">
+      <label>Name:</label><input type="text" id="studentName" placeholder="e.g. Ravi Kumar"><br>
+      <label>Age:</label><input type="number" id="studentAge" placeholder="e.g. 12"><br>
+      <label>Gender:</label><input type="text" id="studentGender" placeholder="e.g. Male/Female"><br>
+      <label>Grade:</label><input type="text" id="studentGrade" placeholder="e.g. 7th Grade"><br>
+      <label>Email:</label><input type="email" id="studentEmail" placeholder="e.g. student@school.com"><br>
+      <label>Parent Phone:</label><input type="text" id="studentParentPhone" placeholder="e.g. 9876543210"><br>
+    </div>
+    <button onclick="addStudent()">Add</button>
+    <button onclick="getStudent()">Get</button>
+    <button onclick="updateStudent()">Update</button>
+    <button onclick="deleteStudent()">Delete</button>
+    <div class="info">ℹ️ GET, PUT, DELETE operations for students are done using the <b>name</b>.</div>
+  </div>
+
+  <!-- User Section remains similar but can be adjusted for school staff -->
+  <h2 onclick="toggleSection('userSection')">👤 Staff Management</h2>
+  <div class="section" id="userSection">
+    <div class="form-group">
+      <label>Username:</label><input type="text" id="userName" placeholder="e.g. admin123"><br>
+      <label>Password:</label><input type="password" id="userPassword" placeholder="••••••"><br>
+      <label>Email:</label><input type="email" id="userEmail" placeholder="e.g. staff@school.com"><br>
+      <label>Role:</label>
+      <select id="userRole">
+        <option value="">--Select Role--</option>
+        <option value="admin">Admin</option>
+        <option value="teacher">Teacher</option>
+        <option value="staff">Staff</option>
+      </select><br>
+    </div>
+    <button onclick="addUser()">Add</button>
+    <button onclick="getUser()">Get</button>
+    <button onclick="updateUser()">Update</button>
+    <button onclick="deleteUser()">Delete</button>
+    <div class="info">ℹ️ GET, PUT, DELETE operations for staff are done using the <b>username</b>.</div>
+  </div>
+</div>
+
+<script>
+  const api = "http://localhost:8080/api";
+
+  function toggleSection(id) {
+    const section = document.getElementById(id);
+    section.style.display = section.style.display === 'block' ? 'none' : 'block';
+  }
+
+  // Principal CRUD
+  function addPrincipal() {
+    fetch(`${api}/principals`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: principalName.value,
+        qualification: principalQualification.value,
+        email: principalEmail.value,
+        phone: principalPhone.value
+      })
+    })
+    .then(res => res.ok ? alert("Principal added successfully") : alert("Failed to add principal"));
+  }
+
+  function getPrincipal() {
+    fetch(`${api}/principals/email/${principalEmail.value}`)
+    .then(res => res.ok ? res.json() : Promise.reject())
+    .then(principal => {
+      principalName.value = principal.name;
+      principalQualification.value = principal.qualification;
+      principalPhone.value = principal.phone;
+      alert("Principal details loaded");
+    })
+    .catch(() => alert("Principal not found"));
+  }
+
+  function updatePrincipal() {
+    fetch(`${api}/principals/email/${principalEmail.value}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: principalName.value,
+        qualification: principalQualification.value,
+        phone: principalPhone.value,
+        email: principalEmail.value
+      })
+    })
+    .then(res => res.ok ? alert("Principal updated successfully") : alert("Principal not found"));
+  }
+
+  function deletePrincipal() {
+    fetch(`${api}/principals/email/${principalEmail.value}`, {
+      method: 'DELETE'
+    })
+    .then(res => res.ok ? alert("Principal deleted") : alert("Principal not found"));
+  }
+
+  // Student CRUD
+  function addStudent() {
+    fetch(`${api}/students`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: studentName.value,
+        age: studentAge.value,
+        gender: studentGender.value,
+        grade: studentGrade.value,
+        email: studentEmail.value,
+        parentPhone: studentParentPhone.value
+      })
+    })
+    .then(res => res.ok ? alert("Student added") : alert("Student already exists"));
+  }
+
+  function getStudent() {
+    fetch(`${api}/students/name/${studentName.value}`)
+    .then(res => res.ok ? res.json() : Promise.reject())
+    .then(student => {
+      studentAge.value = student.age;
+      studentGender.value = student.gender;
+      studentGrade.value = student.grade;
+      studentEmail.value = student.email;
+      studentParentPhone.value = student.parentPhone;
+      alert("Student details loaded");
+    })
+    .catch(() => alert("Student not found"));
+  }
+
+  function updateStudent() {
+    fetch(`${api}/students/name/${studentName.value}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: studentName.value,
+        age: studentAge.value,
+        gender: studentGender.value,
+        grade: studentGrade.value,
+        email: studentEmail.value,
+        parentPhone: studentParentPhone.value
+      })
+    })
+    .then(res => res.ok ? alert("Student updated") : alert("Student not found"));
+  }
+
+  function deleteStudent() {
+    fetch(`${api}/students/name/${studentName.value}`, {
+      method: 'DELETE'
+    })
+    .then(res => res.ok ? alert("Student deleted") : alert("Student not found"));
+  }
+
+  // User CRUD remains similar
+  function addUser() {
+    fetch(`${api}/users/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        username: userName.value,
+        password: userPassword.value,
+        email: userEmail.value,
+        role: userRole.value
+      })
+    })
+    .then(res => res.ok ? alert("User registered") : alert("Failed to register user"));
+  }
+
+  // ... rest of user functions remain the same ...
+</script>
+</body>
+</html>
